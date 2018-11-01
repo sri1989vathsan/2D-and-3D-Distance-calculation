@@ -58,7 +58,7 @@
 	new file:   Other/RNAColoc2.m
 	new file:   Other/RNA_coloc.m
 	new file:   Other/RNA_coloc2.m
-	new file:   Other/RNA_coloc_test.m
+	new file:   Other/RNAColoc_test.m
 	new file:   Other/RNA_coloc2locs.m
 	new file:   Other/RNA_coloc3kmeans.m
 	new file:   Other/RNA_coloc3loc.m
