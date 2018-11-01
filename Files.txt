@@ -1,0 +1,70 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch master
+#
+# Initial commit
+#
+# Changes to be committed:
+	new file:   2D 2 color localization/RNA_coloc2locs.m
+	new file:   2D 2 color localization/RNAloc.m
+	new file:   2D 2 color localization/colocalize2loc.m
+	new file:   2D 2 color/RNA2.m
+	new file:   2D 2 color/RNA_coloc2s.m
+	new file:   2D 2 color/colocalize2.m
+	new file:   2D 3 color new/RNA3.m
+	new file:   2D 3 color new/RNA3alt.m
+	new file:   2D 3 color new/RNA_coloc3.m
+	new file:   2D 3 color new/colocalize2_3colornew.m
+	new file:   2D 3 color new/colocalize3.m
+	new file:   2D 3 color old/RNA3old.m
+	new file:   2D 3 color old/RNA_coloc3old.m
+	new file:   2D 3 color old/colocalize2_3colorold.m
+	new file:   2D per mask 2 color/RNA2mask.m
+	new file:   2D per mask 2 color/RNA_coloc2smask.m
+	new file:   3D 2 color localization with 2d/RNA_coloc2loc_2D3D.m
+	new file:   3D 2 color localization with 2d/RNAloc_2D3D.m
+	new file:   3D 2 color localization with 2d/colocalize2loc_2d3d.m
+	new file:   3D 2 color localization/RNA_coloc2loc_3D.m
+	new file:   3D 2 color localization/RNAloc_3D.m
+	new file:   3D 2 color localization/colocalize2loc_3d.m
+	new file:   3D 2 color with 2d distances/RNA2_2D3D.m
+	new file:   3D 2 color with 2d distances/RNAcoloc2_2D3D.m
+	new file:   3D 2 color with 2d distances/colocalize2_2d3d.m
+	new file:   3D 2 color/RNA2_3D.m
+	new file:   3D 2 color/RNAcoloc2_3D.m
+	new file:   3D 2 color/colocalize2_3d.m
+	new file:   Distance/CommitTest.txt
+	new file:   New folder/RNAColoc.fig
+	new file:   New folder/RNAColoc.m
+	new file:   New folder/RNA_coloc.m
+	new file:   New folder/Shift.m
+	new file:   Other/ARNColoc - Copy.fig
+	new file:   Other/ARNColoc.fig
+	new file:   Other/ARNColoc.m
+	new file:   Other/ARN_coloc.m
+	new file:   Other/AirLoc.m
+	new file:   Other/AirLocs.m
+	new file:   Other/Distance calculation.rar
+	new file:   Other/Multiple_folders.m
+	new file:   Other/RNA2_400.m
+	new file:   Other/RNA3kmeans.m
+	new file:   Other/RNA3loc.m
+	new file:   Other/RNAColoc.fig
+	new file:   Other/RNAColoc.m
+	new file:   Other/RNAColoc1.m
+	new file:   Other/RNAColoc2.fig
+	new file:   Other/RNAColoc2.m
+	new file:   Other/RNA_coloc.m
+	new file:   Other/RNA_coloc2.m
+	new file:   Other/RNA_coloc2locs.m
+	new file:   Other/RNA_coloc3kmeans.m
+	new file:   Other/RNA_coloc3loc.m
+	new file:   Other/cell2csv.m
+	new file:   Other/colocal.m
+	new file:   Other/colocalize.m
+	new file:   Other/correct_shift.m
+	new file:   Other/function mrna5_Callback(hObject, eventdata, handles).m
+
+
