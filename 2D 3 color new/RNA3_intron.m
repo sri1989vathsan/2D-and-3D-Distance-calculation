@@ -1,3 +1,4 @@
+%%%%%%%% Latest version 3 color RNA quantification %%%%%%%%%%
 % Start with a folder and get a list of all subfolders.
 % Finds and prints names of all PNG, JPG, and TIF images in 
 % that folder and all of its subfolders.
@@ -41,6 +42,7 @@ if numberOfFolders == 1
     cprintf('err','error: No subfolders\n');
     return
 end
+jst =[];
 % baseFileNames = [];
 % Process all image files in those folders.
 for k = 1 : numberOfFolders-1
@@ -48,11 +50,17 @@ for k = 1 : numberOfFolders-1
 	thisFolder = listOfFolderNames{k+1};
 % 	fprintf('Processing folder %s\n', thisFolder);
 	cd(thisFolder)
-   
-  
-   RNA_coloc3loc(mask1, mask2, mrnafile, pixelsize, radius, dist, alchk,reference);
-  
-    cd ..
+%     thisFolders = ls;
+%    
+%     for lm = 1:size(thisFolders,1)
+%         jst{lm} = char2cell(thisFolders(lm,:));
+%     end
+  if exist('3p.loc', 'file') == 2 && exist('Cymask.tif','file') == 2 
+   RNA_coloc3_intron(mask1, mask2, mrnafile, pixelsize, radius, dist, alchk,reference);
+  else
+      cprintf('err','NO files to process\n')
+  end
+        cd ..
 % 	% Get PNG files.
 % 	filePattern = sprintf('%s/*.png', thisFolder);
 % 	baseFileNames = dir(filePattern);
