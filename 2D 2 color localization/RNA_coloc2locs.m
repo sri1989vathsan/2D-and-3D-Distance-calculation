@@ -77,10 +77,10 @@ if(~isempty(mrna3file))
     xxx = unique(xxx);
     mrna3(xxx,:) = [];
     mrna3cyt=nucleus(mrna3, img1, inten_dist1);
-    mrna3cyt=mrna3cyt(mrna3cyt(:,5)>=1,1:4);
+    mrna3cyt=mrna3cyt(mrna3cyt(:,4)>=1,1:4);
     if ~isempty(img2)
         mrna3nuc=nucleus(mrna3, img2, inten_dist2);
-        mrna3nuc=mrna3nuc(mrna3nuc(:,4)>=1,1:4);
+        mrna3nuc=mrna3nuc(mrna3nuc(:,5)>=1,1:4);
     else
         mrna3nuc=[];
     end
