@@ -298,7 +298,6 @@ for i=1:length(coor(:,1))
     proche_nuc=zeros(2,2);
     if(round(coor(i,2))>1 && round(coor(i,1))>1)
         proche_nuc= label_img(round(coor(i,2))-1:round(coor(i,2))+1,round(coor(i,1))-1:round(coor(i,1))+1);
-        disp(i);
     end
     if(i_nuc>0)
         coor(i,end)= find(nuc_int==i_nuc);
