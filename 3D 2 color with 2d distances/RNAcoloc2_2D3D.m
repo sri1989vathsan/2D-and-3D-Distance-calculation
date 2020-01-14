@@ -26,6 +26,8 @@ function [cytval,nucval] = RNAcoloc2_2D3D(mask1, mask2, mrna5file, mrna3file, pi
 
 narginchk(4,11);
 threshold=-1;
+dim = [1904 1900];
+
 % if ~exist('radius', 'var') || isempty(radius)
 %     radius=300;
 % end
@@ -63,6 +65,19 @@ if(~isempty(mrna3file))
     mrna3(:,1) = mrna33(:,2);
     mrna3(:,2) = mrna33(:,1);
     
+    
+%     for m=1:length(mrna34)
+%         if(round(mrna3(m,1))>=dim(1) || round(mrna3(m,1))==0)
+%             mrna3(m,:) =[];
+%         elseif(round(mrna3(m,2))>=dim(2) || round(mrna3(m,2))==0)
+%             mrna3(m,:) =[];
+%         end   
+%     end
+    mrna3(round(mrna3(:,1))>=dim(1),:) = [];
+    mrna3(round(mrna3(:,1))==0,:) = [];
+    mrna3(round(mrna3(:,2))>=dim(2),:) = [];
+    mrna3(round(mrna3(:,2))==0,:) = [];
+    
     for i = 1:length(mrna3)
         D = zeros(size(mrna3,1),1);
         D(i+1:end) = double((mrna3(i+1:end,1)-mrna3(i,1)).^2 + (mrna3(i+1:end,2)-mrna3(i,2)).^2 + (mrna3(i+1:end,3)-mrna3(i,3)).^2);
@@ -94,6 +109,17 @@ if(~isempty(mrna5file))
     mrna55 = mrna5;
     mrna5(:,1) = mrna55(:,2);
     mrna5(:,2) = mrna55(:,1);
+    
+    mrna5(round(mrna5(:,1))>=dim(1),:) = [];
+    mrna5(round(mrna5(:,1))==0,:) = [];
+    mrna5(round(mrna5(:,2))>=dim(2),:) = [];
+    mrna5(round(mrna5(:,2))==0,:) = [];
+    
+%     mrna54 = round(mrna5);
+%     mrna5(mrna54(:,1)>=dim(1),:) = [];
+%     mrna5(mrna54(:,1)==0,:) = [];
+%     mrna5(mrna54(:,2)>=dim(2),:) = [];
+%     mrna5(mrna54(:,2)==0,:) = [];
     
        for i = 1:length(mrna5)
         D = zeros(size(mrna5,1),1);
@@ -272,6 +298,7 @@ for i=1:length(coor(:,1))
     proche_nuc=zeros(2,2);
     if(round(coor(i,2))>1 && round(coor(i,1))>1)
         proche_nuc= label_img(round(coor(i,2))-1:round(coor(i,2))+1,round(coor(i,1))-1:round(coor(i,1))+1);
+        disp(i);
     end
     if(i_nuc>0)
         coor(i,end)= find(nuc_int==i_nuc);
