@@ -10,7 +10,7 @@ format longg;
 format compact;
 pixelsize = 39.682539;
 zpixelsize = 180; 
-radius = 600; %radius of exclusion (for the same channel)
+radius = 400; %radius of exclusion (for the same channel)
 dist = 100; %radius of inclusion (for two different channels)
 alchk = 1; % 1 if you want to check alignment, 0 if you don't
   mask1 = 'Cymask.tif'; %cytoplasmidc mask file name
