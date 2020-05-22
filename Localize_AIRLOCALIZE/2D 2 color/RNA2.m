@@ -1,81 +1,67 @@
-% Start with a folder and get a list of all subfolders.
-% Finds and prints names of all PNG, JPG, and TIF images in 
-% that folder and all of its subfolders.
-clc;% Clear the command window
-clear; 
-workspace;  % Make sure the workspace panel is showing.
-format longg;
-format compact;
-pixelsize = 39.682539;
-radius = 300; %radius of inclusion (for two channels)
-dist = 100; %radius of exclusion (for the same channel)
-alchk = 0; % 1 if you want to check alignment, 0 if you don't
-  mask1 = 'Cymask.tif'; %cytoplasmidc mask file name
-    mask2 = 'Nucmask.tif'; % use '' in case there is only one mask
-    mrna5file = 'Cy5.loc'; %Cy5 max projection file name
-    mrna3file = 'Cy3.loc'; %Cy3 max projection file name
+%%% The script analyzes "2 color smFISH" data within subfolders and saves 
+%%% the output within those subfolders
 
-% Define a starting folder.
-% start_path = fullfile(matlabroot, '\toolbox\images\imdemos');
-% Ask user to confirm or change.
-% topLevelFolder = uigetdir(start_path);
-% if topLevelFolder == 0
-% 	return;
-% end
-% Get list of all subfolders.
-topLevelFolder = pwd; %current working directory
+%%% Each subfolder should contain a list of files required for analysis
+%%% within the subfolder - Cy5.loc, Cy3.loc, Cymask.tif, Nucmask.tif
+
+%%% Open Example Files/2color and run this file within that folder as an
+%%% example
+
+clc; % Clear the command window
+clear; % Clears the workspace
+workspace;  % Make sure the workspace panel is showing.
+format long; % Increase decimal places for your variables
+pixelsize = 39.682539; %Size of pixel for your dataset
+radius = 300; % Radius of inclusion (for two channels)
+dist = 100; % Radius of exclusion (for the same channel) - to exclude other
+            % signals within the radius from the same channel
+mask1 = 'Cymask.tif'; % cytoplasmic mask file name
+mask2 = 'Nucmask.tif'; % use '' in case there is only one mask
+mrna5file = 'Cy5.loc'; % Cy5 max projection file name
+mrna3file = 'Cy3.loc'; % Cy3 max projection file name
+
+topLevelFolder = pwd; % current working directory
 allSubFolders = genpath(topLevelFolder);
-% Parse into a cell array.
+
+%%% Parse into a cell array.
 remain = allSubFolders;
 listOfFolderNames = {};
+
+%%% Generate list of subfolders
 while true
-	[singleSubFolder, remain] = strtok(remain, ';');
-	if isempty(singleSubFolder)
-		break;
-	end
-	listOfFolderNames = [listOfFolderNames singleSubFolder];
+    [singleSubFolder, remain] = strtok(remain, ';');
+    if isempty(singleSubFolder)
+        break;
+    end
+    listOfFolderNames = [listOfFolderNames singleSubFolder];
 end
 numberOfFolders = length(listOfFolderNames);
 
+%%% Check if there exists subfolders
+listOfFolderNames = natsortfiles(listOfFolderNames);
 if numberOfFolders == 1
     cprintf('err','error: No subfolders\n');
     return
 end
 
-nucval = [];
-cytval = [];
-% baseFileNames = [];
-% Process all image files in those folders.
+%%% Initializing variables to store data from all subfolders
+nucvals = [];
+cytvals = [];
+
+%%% Process all image files in those folders.
 for k = 1 : numberOfFolders-1
-	% Get this folder and print it out.
-	thisFolder = listOfFolderNames{k+1};
-% 	fprintf('Processing folder %s\n', thisFolder);
-	cd(thisFolder)
-    
-   [cytval,nucval] = RNA_coloc2s(mask1, mask2, mrna5file, mrna3file, pixelsize, radius, dist, alchk,nucval,cytval);
-    
+    % Get this folder and print it out.
+    thisFolder = listOfFolderNames{k+1};
+    cd(thisFolder)
+    %% Analyze data within the subfolder
+    [cytval,nucval] = RNA_coloc2s(mask1, mask2, mrna5file, mrna3file, pixelsize, radius, dist,nucval,cytval);
+    nucvals = [nucvals;nucval];
+    cytvals = [cytvals;cytval];
     cd ..
-% 	% Get PNG files.
-% 	filePattern = sprintf('%s/*.png', thisFolder);
-% 	baseFileNames = dir(filePattern);
-% 	% Add on TIF files.
-% 	filePattern = sprintf('%s/*.tif', thisFolder);
-% 	baseFileNames = [baseFileNames; dir(filePattern)];
-% 	% Add on JPG files.
-% 	filePattern = sprintf('%s/*.jpg', thisFolder);
-% 	baseFileNames = [baseFileNames; dir(filePattern)];
-% 	numberOfImageFiles = length(baseFileNames);
-% 	% Now we have a list of all files in this folder.
-% 	
-% 	if numberOfImageFiles >= 1
-% 		% Go through all those image files.
-% 		for f = 1 : numberOfImageFiles
-% 			fullFileName = fullfile(thisFolder, baseFileNames(f).name);
-% 			fprintf('     Processing image file %s\n', fullFileName);
-% 		end
-% 	else
-% 		fprintf('     Folder %s has no image files in it.\n', thisFolder);
-% 	end
 end
+
+%% Writing combined data from all fields
+csvwrite('Cytoplasmic Values.csv',cytvals);
+csvwrite('Nuclear Values.csv',nucvals);
 
 cprintf('Comments','Done\n')
