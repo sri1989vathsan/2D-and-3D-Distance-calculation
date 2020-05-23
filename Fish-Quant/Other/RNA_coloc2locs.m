@@ -108,7 +108,7 @@ end
 
 %%% Function to save distance values for Different compartments as
 %%% Distances.csv
-%%% The output saved Distances file has 8 columns
+%%% The saved Distances.csv files have 8 columns
 %%% Column 1 -> index
 %%% Column 2,3 -> intensities of localizes spots (spot1 and spot2)
 %%% Column 4 -> Distance
@@ -121,18 +121,18 @@ end
 
 function twospotInput(spot1, spot2, spot1_coloc_spot2, pixelsize,spot1_spot2_coloc_val)
 
-mrna5_3Data1= zeros(size(spot1_coloc_spot2,1),8);
+mrnaData1= zeros(size(spot1_coloc_spot2,1),8);
 a=size(spot1_coloc_spot2,1);
 if(a>0)
-    mrna5_3Data1(:,1) = 1:1:size(spot1_coloc_spot2,1);
-    mrna5_3Data1(:,2) = spot1(spot1_coloc_spot2(:,1),3);
-    mrna5_3Data1(:,3) = spot2(spot1_coloc_spot2(:,4),3);
-    mrna5_3Data1(:,4) = spot1_coloc_spot2(:,3).*pixelsize;
-    mrna5_3Data1(:,5:6) = spot1(spot1_coloc_spot2(:,1),1:2);
-    mrna5_3Data1(:,7:8) = spot2(spot1_coloc_spot2(:,4),1:2);
+    mrnaData1(:,1) = 1:1:size(spot1_coloc_spot2,1);
+    mrnaData1(:,2) = spot1(spot1_coloc_spot2(:,1),3);
+    mrnaData1(:,3) = spot2(spot1_coloc_spot2(:,4),3);
+    mrnaData1(:,4) = spot1_coloc_spot2(:,3).*pixelsize;
+    mrnaData1(:,5:6) = spot1(spot1_coloc_spot2(:,1),1:2);
+    mrnaData1(:,7:8) = spot2(spot1_coloc_spot2(:,4),1:2);
 end
 
-csvwrite('Distances.csv',mrna5_3Data1);
+csvwrite('Distances.csv',mrnaData1);
 
 pixel_shift = spot1_spot2_coloc_val(:,3:4);
 

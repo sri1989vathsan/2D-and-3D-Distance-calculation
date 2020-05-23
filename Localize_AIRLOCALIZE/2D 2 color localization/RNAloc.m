@@ -2,9 +2,15 @@
 %%% subfolders and saves the output within those subfolders
 
 %%% Each subfolder should contain a list of files required for analysis
-%%% within the subfolder - Cy5.loc, Cy3.loc, Cymask.tif, Nucmask.tif
+%%% within the subfolder - Cy5.loc, Cy3.loc, corresponding to signals from
+%%% two regions of the mRNA (eg 5' and 3') and Cymask.tif, Nucmask.tif
+%%% which represent the cytoplasmic and nuclear masks respectively
 
-%%% Open Example Files/2color loc and run this file within that folder as an
+%%% The output is saved within subfolders - 'Distances.csv'
+
+%%% The combined data is saved as 'Distance Values.csv'
+
+%%% Open Example Files/2 color loc and run this file within that folder as an
 %%% example
 
 clc; % Clear the command window

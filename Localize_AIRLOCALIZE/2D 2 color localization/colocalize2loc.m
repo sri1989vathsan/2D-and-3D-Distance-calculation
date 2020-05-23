@@ -3,8 +3,8 @@ function [out,min_coloc]=colocalize2loc(mrna1, mrna2, pixelsize,radiuss)
 %%% Function to colocalize spots between different channels (in this case
 %%% two channels) and return distances and coordinates of spots that
 %%% colocalize
-%%% colocalize2 outputs three variables
-%%% 1. mrna5_coloc_mrna3_nuc - the first column contains the index
+%%% colocalize2 outputs two variables
+%%% 1. out - the first column contains the index
 %%% number of spot from first .loc input(default mrna5nuc),
 %%% second column indicates number of spots that colocalized
 %%% from mrna3nuc, third column contains distances between the
@@ -48,7 +48,7 @@ min_coloc(vals,:) = [];
 end
 
 %%% function to colocalize spots from rna1 and rna2 within a radius of
-%%% radius/pixelsize (in pixels)
+%%% radius (in pixels)
 function doColoc(rna1, rna2,radius)
 global res
 global min_coloc_dif
@@ -62,6 +62,7 @@ for i=1:length(res(:,1))
     summ = sum(coloc); % check if there is more than one spot that colocalizes
     [min_val,min_index] = min(dst); % find minimum distance and its position
     res(i,1:4)=double([i, sum(coloc), sqrt(min_val), min_index]);
-    min_coloc_dif(i,1:4)=double([i, summ,rna2(min_index,1)-rna1(i,1),rna2(min_index,2)-rna1(i,2)]);
+    min_coloc_dif(i,1:4)=double([i, summ,rna2(min_index,1)-rna1(i,1),...
+        rna2(min_index,2)-rna1(i,2)]);
 end
 end

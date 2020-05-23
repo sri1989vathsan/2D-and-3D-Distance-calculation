@@ -1,0 +1,69 @@
+%%% The script analyzes "3 color smFISH" data within subfolders and saves 
+%%% the output within those subfolders
+
+%%% Each subfolder should contain a list of files required for analysis
+%%% within the subfolder - 5p.loc, 3p.loc and mid.loc corresponding to the 
+%%% localization files for the signals from 5' 3' and middle regions of 
+%%% the mRNA and Cymask.tif, Nucmask.tif which are the cytoplasmic and
+%%% nuclear masks respsectively
+
+%%% Open Example Files/3 color and run this file within that folder as an
+%%% example
+
+clc;% Clear the command window
+clear; 
+workspace;  % Make sure the workspace panel is showing.
+format long;
+pixelsize = 39.682539;
+radius = 300; % radius of exclusion (for the same channel)
+dist = 100; % radius of inclusion (for two different channels)
+mask1 = 'Cymask.tif'; % cytoplasmic mask file name
+mask2 = 'Nucmask.tif'; % use '' in case there is only one mask
+%filenames for the three signals from within the same mRNA
+mrnafile = ["5p.loc"; "mid.loc"; "3p.loc"]; 
+%%% reference used to allocate spots from other channels are neighbours.
+%%% Available options: '5p', '3p' and 'mid'. For eg. If 'mid' is set as
+%%% reference then the spots within the mid channel will be used to 
+%%% neighbouring spots within the 5p and 3p channels
+reference=["mid"];
+
+topLevelFolder = pwd; %current working directory
+allSubFolders = genpath(topLevelFolder);
+
+% Parse into a cell array.
+remain = allSubFolders;
+listOfFolderNames = {};
+
+%%% Generate list of subfolders
+while true
+	[singleSubFolder, remain] = strtok(remain, ';');
+	if isempty(singleSubFolder)
+		break;
+	end
+	listOfFolderNames = [listOfFolderNames singleSubFolder];
+end
+numberOfFolders = length(listOfFolderNames);
+
+%%% Check if there exists subfolders
+if numberOfFolders == 1
+    cprintf('err','error: No subfolders\n');
+    return
+end
+nucval =[];
+
+% Process all image files in those folders.
+for k = 1 : numberOfFolders-1
+
+	thisFolder = listOfFolderNames{k+1};
+	cd(thisFolder)
+
+  if exist('3p.loc', 'file') == 2 && exist('Cymask.tif','file') == 2 
+   RNA_coloc3(mask1, mask2, mrnafile, pixelsize, radius, dist, alchk,reference);
+  else
+      cprintf('err','NO files to process\n')
+  end
+        cd ..
+
+end
+
+cprintf('Comments','Done\n')

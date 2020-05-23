@@ -2,9 +2,19 @@
 %%% the output within those subfolders
 
 %%% Each subfolder should contain a list of files required for analysis
-%%% within the subfolder - Cy5.loc, Cy3.loc, Cymask.tif, Nucmask.tif
+%%% within the subfolder - Cy5.loc, Cy3.loc, corresponding to signals from
+%%% two regions of the mRNA (eg 5' and 3') and Cymask.tif, Nucmask.tif
+%%% which represent the cytoplasmic and nuclear masks respectively. By
+%%% default Cy5 is assumed as the 5' spot and Cy3 the 3' spot and Cy5
+%%% signal is used as refernce to identify nearby Cy3 spots.
 
-%%% Open Example Files/2color and run this file within that folder as an
+%%% The output is saved within subfolders - 'Cytoplasmic Distances.csv' and
+%%% 'Nuclear Distances.csv' contain distance information
+
+%%% The combined data is saved as 'Nuclear Values.csv', 'Cytoplasmic
+%%% Values.csv'
+
+%%% Open Example Files/2 color and run this file within that folder as an
 %%% example
 
 clc; % Clear the command window
@@ -54,7 +64,8 @@ for k = 1 : numberOfFolders-1
     thisFolder = listOfFolderNames{k+1};
     cd(thisFolder)
     %% Analyze data within the subfolder
-    [cytval,nucval] = RNA_coloc2s(mask1, mask2, mrna5file, mrna3file, pixelsize, radius, dist,nucval,cytval);
+    [cytval,nucval] = RNA_coloc2s(mask1, mask2, mrna5file, mrna3file, ...
+        pixelsize, radius, dist,nucval,cytval);
     nucvals = [nucvals;nucval];
     cytvals = [cytvals;cytval];
     cd ..

@@ -2,9 +2,11 @@
 %%% the output within those subfolders
 
 %%% Each subfolder should contain a list of files required for analysis
-%%% within the subfolder - Cy5.loc, Cy3.loc, Cymask.tif, Nucmask.tif
+%%% within the subfolder - Cy5.loc, Cy3.loc, corresponding to signals from
+%%% two regions of the mRNA (eg 5' and 3') and Cymask.tif, Nucmask.tif
+%%% which represent the cytoplasmic and nuclear masks respectively. By d
 
-%%% Open Example Files/2color and run this file within that folder as an
+%%% Open Example Files/2 color and run this file within that folder as an
 %%% example
 
 clc; % Clear the command window
@@ -45,24 +47,23 @@ if numberOfFolders == 1
 end
 
 %%% Initializing variables to store data from all subfolders
-nucval = [];
-cytval = [];
+nucvals = [];
+cytvals = [];
 
 %%% Process all image files in those folders.
 for k = 1 : numberOfFolders-1
     % Get this folder and print it out.
     thisFolder = listOfFolderNames{k+1};
-    % 	fprintf('Processing folder %s\n', thisFolder);
     cd(thisFolder)
-    
     %% Analyze data within the subfolder
     [cytval,nucval] = RNA_coloc2s(mask1, mask2, mrna5file, mrna3file, pixelsize, radius, dist,nucval,cytval);
-    
+    nucvals = [nucvals;nucval];
+    cytvals = [cytvals;cytval];
     cd ..
 end
 
 %% Writing combined data from all fields
-csvwrite('Cytoplasmic Values.csv',cytval);
-csvwrite('Nuclear Values.csv',nucval);
+csvwrite('Cytoplasmic Values.csv',cytvals);
+csvwrite('Nuclear Values.csv',nucvals);
 
 cprintf('Comments','Done\n')
