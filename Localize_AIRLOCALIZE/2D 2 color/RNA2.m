@@ -13,8 +13,10 @@
 
 %%% The combined data is saved as 'Nuclear Values.csv', 'Cytoplasmic
 %%% Values.csv'
+%%% This contains 5 columns - 1,2 coordinates for spot1, 3,4
+%%% coordinates for spot2 and 5 - distance
 
-%%% Open Example Files/2 color and run this file within that folder as an
+%%% Open 'Example Files/2 color' and run this file within that folder as an
 %%% example
 
 clc; % Clear the command window
@@ -58,14 +60,13 @@ end
 nucvals = [];
 cytvals = [];
 
-%%% Process all image files in those folders.
+%%% Process all image files in those subfolders.
 for k = 1 : numberOfFolders-1
-    % Get this folder and print it out.
     thisFolder = listOfFolderNames{k+1};
     cd(thisFolder)
     %% Analyze data within the subfolder
     [cytval,nucval] = RNA_coloc2s(mask1, mask2, mrna5file, mrna3file, ...
-        pixelsize, radius, dist,nucval,cytval);
+        pixelsize, radius, dist);
     nucvals = [nucvals;nucval];
     cytvals = [cytvals;cytval];
     cd ..

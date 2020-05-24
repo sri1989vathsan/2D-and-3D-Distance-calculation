@@ -45,7 +45,8 @@ if(~isempty(mrna3file))
     for i = 1:length(mrna3)
         D = zeros(size(mrna3,1),1);
         % calculating distances between spots in the same channel
-        D(i+1:end) = double((mrna3(i+1:end,1)-mrna3(i,1)).^2 + (mrna3(i+1:end,2)-mrna3(i,2)).^2+ (mrna3(i+1:end,3)-mrna3(i,3)).^2);
+        D(i+1:end) = double((mrna3(i+1:end,1)-mrna3(i,1)).^2 + ...
+            (mrna3(i+1:end,2)-mrna3(i,2)).^2);
         D = sqrt(D);
         D = D*pixelsize;
         % excluding spots within the radius of exclusion
@@ -70,7 +71,8 @@ if(~isempty(mrna5file))
     for i = 1:length(mrna5)
         D = zeros(size(mrna5,1),1);
         % calculating distances between spots in the same channel
-        D(i+1:end) = double((mrna5(i+1:end,1)-mrna5(i,1)).^2 + (mrna5(i+1:end,2)-mrna5(i,2)).^2);
+        D(i+1:end) = double((mrna5(i+1:end,1)-mrna5(i,1)).^2 + ...
+            (mrna5(i+1:end,2)-mrna5(i,2)).^2);
         D = sqrt(D);
         D = D*pixelsize;
         % excluding spots within the radius of exclusion
@@ -91,12 +93,17 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if (~isempty(mrna5file) &&  ~isempty(mrna3file))
-    [mrna5_coloc_mrna3,mrna5_mrna3_coloc_val]= colocalize2loc(mrna5, mrna3,pixelsize,radius);
+    [mrna5_coloc_mrna3,mrna5_mrna3_coloc_val]= ...
+        colocalize2loc(mrna5, mrna3,pixelsize,radius);
     
-    mrna5_mrna3_coloc_val = mrna5_mrna3_coloc_val(mrna5_mrna3_coloc_val(:,2)==1,:);
-    mrna5_mrna3_coloc_val_fin(:,3:4) =  mrna5_mrna3_coloc_val(:,3:4).*pixelsize;
+    mrna5_mrna3_coloc_val = ...
+    mrna5_mrna3_coloc_val(mrna5_mrna3_coloc_val(:,2)==1,:);
     
-    twospotInput(mrna5, mrna3, mrna5_coloc_mrna3, pixelsize, mrna5_mrna3_coloc_val_fin);
+    mrna5_mrna3_coloc_val_fin(:,3:4) =  ...
+        mrna5_mrna3_coloc_val(:,3:4).*pixelsize;
+    
+    twospotInput(mrna5, mrna3, mrna5_coloc_mrna3, ...
+        pixelsize, mrna5_mrna3_coloc_val_fin);
     
 end
 
@@ -114,10 +121,11 @@ end
 %%% Column 4 -> Distance
 %%% Column 5 and 6 -> Coordinates for spot1
 %%% Column 7 and 8 -> Coordinates for spot2
+
 %%% Pixel shift.csv saves relative coordinates of spot2 wrt spot 1 for the
 %%% nearest localized spots- It has 3 columns - 
 %%% Column 1 -> index
-%%% Column 5 and 6 -> Relative coordinates
+%%% Column 2 and 3 -> Relative coordinates
 
 function twospotInput(spot1, spot2, spot1_coloc_spot2, pixelsize,spot1_spot2_coloc_val)
 

@@ -7,10 +7,30 @@
 %%% which represent the cytoplasmic and nuclear masks respectively
 
 %%% The output is saved within subfolders - 'Distances.csv'
+%%% The saved Distances.csv files have 8 columns
+%%% Column 1 -> index
+%%% Column 2,3 -> intensities of localizes spots (spot1 and spot2)
+%%% Column 4 -> Distance
+%%% Column 5 and 6 -> Coordinates for spot1
+%%% Column 7 and 8 -> Coordinates for spot2
+%%% Pixel shift.csv saves relative coordinates of spot2 wrt spot 1 for the
+%%% nearest localized spots- It has 3 columns - 
+%%% Column 1 -> index
+%%% Column 5 and 6 -> Relative coordinates
 
 %%% The combined data is saved as 'Distance Values.csv'
+%%% The saved Distance Values.csv files have 8 columns
+%%% Column 1 -> index
+%%% Column 2,3 -> intensities of localizes spots (spot1 and spot2)
+%%% Column 4 -> Distance
+%%% Column 5 and 6 -> Coordinates for spot1
+%%% Column 7 and 8 -> Coordinates for spot2
 
-%%% Open Example Files/2 color loc and run this file within that folder as an
+%%% Pixel shift.csv saves relative coordinates of spot2 wrt spot 1 for the
+%%% nearest localized spots- It has 3 columns - 
+%%% Column 1 -> index
+%%% Column 5 and 6 -> Relative coordinates
+%%% Open 'Example Files/2 color loc' and run this file within that folder as an
 %%% example
 
 clc; % Clear the command window
@@ -58,7 +78,8 @@ for k = 1 : numberOfFolders-1
     thisFolder = listOfFolderNames{k+1};
     cd(thisFolder)
     %%% Analyze data within the subfolder
-    val = RNA_coloc2locs(mask1, mrna5file, mrna3file, pixelsize, radius, dist);
+    val = RNA_coloc2locs(mask1, mrna5file, mrna3file, pixelsize, ...
+        radius, dist);
     vals = [vals;val];
     cd ..
 end

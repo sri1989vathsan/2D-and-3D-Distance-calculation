@@ -1,4 +1,5 @@
-function [cytval,nucval] = RNA_coloc2s(mask1, mask2, mrna5file, mrna3file, pixelsize, radius, dist)
+function [cytval,nucval] = RNA_coloc2s(mask1, mask2, mrna5file, ...
+    mrna3file, pixelsize, radius, dist)
 
 %%% RNA_coloc2s - for analyzing 2 color images - Cy5 and Cy3 spots
 %%% inputs are as follows
@@ -154,15 +155,17 @@ disp('Done')
 
 end
 
-%%% Function to save distance values for Different compartments as Nuclear Distances.csv
-%%% and Cytoplasmic Distances.csv and in case of no nuclear mask -
-%%% Distances.csv
-%%% The saved Distances.csv files have 8 columns
+%%% Function to save distance values for Different compartments as 
+%%% Nuclear Distances.csv and Cytoplasmic Distances.csv and in case of 
+%%% no nuclear mask - Distances.csv
+
+%%% All saved ~ Distances.csv  files have 8 columns
 %%% Column 1 -> index
 %%% Column 2,3 -> intensities of localizes spots (spot1 and spot2)
 %%% Column 4 -> Distance
 %%% Column 5 and 6 -> Coordinates for spot1
 %%% Column 7 and 8 -> Coordinates for spot2
+
 function twospotInput(spot1cyt, spot2cyt, spot1_coloc_spot2_cyt,spot1nuc, ...
     spot2nuc, spot1_coloc_spot2_nuc, pixelsize,img2)
 

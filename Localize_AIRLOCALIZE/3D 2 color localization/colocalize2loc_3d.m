@@ -1,59 +1,72 @@
-function [out,min_coloc,vals]=colocalize2loc_3d(mrna1, mrna2, pixelsize,zpixelsize, radiuss)
-%%Return the number of colocalize arn from rna1 and rna2
+function [out,min_coloc]=colocalize2loc_3d(mrna1, mrna2, pixelsize, ...
+    zpixelsize, radiuss)
+
+%%% Function to colocalize spots between different channels in 3D (in this 
+%%% case two channels) and return distances and coordinates of spots that
+%%% colocalize
+%%% colocalize2_3d outputs two variables
+%%% 1. out - the first column contains the index
+%%% number of spot from first .loc input(default mrna5nuc),
+%%% second column indicates number of spots that colocalized
+%%% from mrna3nuc, third column contains distances between the
+%%% spots that colocalized (in pixels) and the fourth column
+%%% contains the index of the colocalized spot (mrna3nuc)
+%%% 2. min_coloc - contains 5 columns - the first column contains the index
+%%% number of spot from first .loc input(default mrna5nuc),
+%%% second column indicates number of spots that colocalized, the third, 
+%%% fourth and fifth columns conatain the relative x and y coordinates of the
+%%% colocalized spots (used for calculating radius of gyration or measuring
+%%% accuracy of imaging)   
+
 global res
-global coloc_ind
 global min_coloc_dif
+
 rna1 = mrna1;
 rna2 = mrna2;
 radius=radiuss;
-coloc_ind={};
 n= numel(rna1(:,1));
 res=zeros(n,4);
 min_coloc_dif=zeros(n,4);
-doColoc(rna1, rna2, pixelsize,zpixelsize,radius);
-% waitfor(hbut, 'UserData')
-out=res;
 
+doColoc(rna1, rna2, pixelsize, zpixelsize, radius);
+out=res;
+min_coloc=min_coloc_dif;
+
+%%% Check if multiple spots from rna1 have same closest spot from rna2
 u=unique(out(find(~isnan(out(:,4))>0),4));
 n=histc(out(:,4),u);
 d = u(n > 1);
 vals = find(ismember(out(:,4),d));
 
+%%% remove spots from rna1 that colocalize with the same spot from rna2
 out(vals,:) = [];
-
-out(find(out(:,2)<1),:) = [];
-
-each_coloc=coloc_ind;
-min_coloc=min_coloc_dif;
 min_coloc(vals,:) = [];
 
-
-    function updateVal(~, ~)
-        pix=get(hsl, 'Value');
-        set(h,'MarkerSize', pix)
-        set(htext, 'String', [num2str(pix*100*pixelsize/100), 'nm']);
-    end
-
+temp = out;
+%%% remove spots from rna1 that colocalized with multiple spots from rna2
+out(find(out(:,2)~=1),:) = [];
+min_coloc(find(temp(:,2)~=1),:) = [];
 end
 
+%%% function to colocalize spots from rna1 and rna2 within a radius of
+%%% radius (in pixels)
 function doColoc(rna1, rna2, pixelsize,zpixelsize,radius)
 global res
-global coloc_ind
-global min_coloc_dif
-% slider=findobj(0,'Tag','gslider');
-% radius=get(slider, 'Value');
-% disp(['Radius : ', num2str(radius*pixelsize),'nm']);
+global min_coloc_dif 
+
+%%% cycle through all spots from rna1
 for i=1:length(res(:,1))
-    dst= double(((rna2(:,1)-rna1(i,1))*pixelsize).^2 + ((rna2(:,2)-rna1(i,2))*pixelsize).^2+ ((rna2(:,3)-rna1(i,3))*zpixelsize).^2);
+    %%% calculate all distances between ith spot in rna1 and all spots in 
+    %%% rna2
+    dst= double(((rna2(:,1)-rna1(i,1))*pixelsize).^2 + ...
+        ((rna2(:,2)-rna1(i,2))*pixelsize).^2 + ...
+        ((rna2(:,3)-rna1(i,3))*zpixelsize).^2);
     coloc= dst<=(radius.^2);
     summ = sum(coloc);
     [min_val,min_index] = min(dst);
     res(i,1:4)=double([i, sum(coloc), sqrt(min_val), min_index]);
-    coloc_ind{i}=find(coloc);
-%     min_coloc_dif(i) = min_index;
-%      rna2(min_index,1)-rna1(i,1)
-%      rna2(min_index,2)-rna1(i,2)
-    min_coloc_dif(i,1:4)=double([i, sum(coloc),rna2(min_index,1)-rna1(i,1),rna2(min_index,2)-rna1(i,2)]);
+    min_coloc_dif(i,1:5)=double([i, summ, ...
+        rna2(min_index,1)-rna1(i,1), rna2(min_index,2)-rna1(i,2), ...
+        rna2(min_index,3)-rna1(i,3)]);
 end
-% close gcf
 end

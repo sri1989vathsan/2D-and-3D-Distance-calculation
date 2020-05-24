@@ -29,6 +29,7 @@ min_coloc_dif=zeros(n,4);
 
 doColoc(rna1, rna2,radius);
 out=res;
+min_coloc=min_coloc_dif;
 
 %%% Check if multiple spots from rna1 have same closest spot from rna2
 u=unique(out(find(~isnan(out(:,4))>0),4));
@@ -38,13 +39,12 @@ vals = find(ismember(out(:,4),d));
 
 %%% remove spots from rna1 that colocalize with the same spot from rna2
 out(vals,:) = [];
-
-%%% remove spots from rna1 that colocalized with multiple spots from rna2
-out(find(out(:,2)<1),:) = [];
-
-min_coloc=min_coloc_dif;
 min_coloc(vals,:) = [];
 
+temp = out;
+%%% remove spots from rna1 that colocalized with multiple spots from rna2
+out(find(out(:,2)~=1),:) = [];
+min_coloc(find(temp(:,2)~=1),:) = [];
 end
 
 %%% function to colocalize spots from rna1 and rna2 within a radius of
